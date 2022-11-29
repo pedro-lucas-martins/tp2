@@ -1,9 +1,8 @@
 //
-// Created by pedro on 23/11/22.
+// Created by pedro on 29/11/22.
 //
 
 #include "Doador.h"
-#include "Residuos.h"
-#include <iostream>
 
-Doador::Doador(){}
+Doador::Doador(){};
+

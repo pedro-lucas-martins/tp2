@@ -1,11 +1,7 @@
 //
-// Created by pedro on 24/11/22.
+// Created by pedro on 29/11/22.
 //
 
 #include "Solido.h"
-#include <iostream>
 
-Solido::Solido()
-{
-    
-}
+Solido::Solido() = default;

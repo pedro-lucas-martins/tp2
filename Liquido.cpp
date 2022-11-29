@@ -1,15 +1,7 @@
 //
-// Created by pedro on 24/11/22.
+// Created by pedro on 29/11/22.
 //
 
 #include "Liquido.h"
-#include <string>
-#include <iostream>
 
-Liquido::Liquido()
-{
-
-}
-
-
-
+Liquido::Liquido() = default;

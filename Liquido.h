@@ -1,18 +1,16 @@
 //
-// Created by pedro on 24/11/22.
+// Created by pedro on 29/11/22.
 //
 
-#ifndef TP_2_LIQUIDO_H
-#define TP_2_LIQUIDO_H
-#include "Residuos.h"
-#include <string>
+#ifndef TP_2_ARQUIVO_LIQUIDO_H
+#define TP_2_ARQUIVO_LIQUIDO_H
+#include "Residuo.h"
 
 
-class Liquido: public Residuos {
-private:
+class Liquido: public Residuo{
 public:
     Liquido();
 };
 
 
-#endif //TP_2_LIQUIDO_H
+#endif //TP_2_ARQUIVO_LIQUIDO_H

@@ -1,18 +1,16 @@
 //
-// Created by pedro on 24/11/22.
+// Created by pedro on 29/11/22.
 //
 
-#ifndef TP_2_SOLIDO_H
-#define TP_2_SOLIDO_H
-#include "Residuos.h"
-#include <vector>
+#ifndef TP_2_ARQUIVO_SOLIDO_H
+#define TP_2_ARQUIVO_SOLIDO_H
 #include <string>
+#include "Residuo.h"
 
-class Solido: public Residuos{
-private:
+class Solido: public Residuo {
 public:
     Solido();
 };
 
 
-#endif //TP_2_SOLIDO_H
+#endif //TP_2_ARQUIVO_SOLIDO_H

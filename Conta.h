@@ -1,42 +1,23 @@
 //
-// Created by pedro on 23/11/22.
+// Created by pedro on 29/11/22.
 //
 
-#ifndef TP_2_CONTA_H
-#define TP_2_CONTA_H
-#include <string>
-#include <vector>
-#include "Residuos.h"
+#ifndef TP_2_ARQUIVO_CONTA_H
+#define TP_2_ARQUIVO_CONTA_H
+#include "GerenciamentoDeArquivos.h"
+#include "Residuo.h"
 
-class Conta {
 
+class Conta
+{
 private:
-    std::vector<Residuos*> residuo;
-    Residuos* currentResiduo;
-    std::string nome;
-    std::string pessoaS;
-    std::string senha;
-    int pessoaJuridica;
-    std::string doador;
-    int _tipoResiduo;
+    GerenciamentoDeArquivos* auxArquivo = new GerenciamentoDeArquivos;
+    Conta* novaConta;
 public:
     Conta();
-    ~Conta();
-    void cadastrarConta(int isDoador);
-    void atualizarConta();
-    void deletarConta();
-    void tipoDePessoa();
-    bool checkIfUsed(std::string senha, std::vector<std::string> senhas);
-
-    const std::string &getNome() const;
-
-    const std::string &getPessoaS() const;
-
-    const std::string &getDoador() const;
-
-    const std::vector<Residuos *> &getResiduo() const;
-
+    void registrarConta();
+    void perguntaResiduo(GerenciamentoDeArquivos* auxConta,std::string doaRecolhe, std::string nome);
 };
 
 
-#endif //TP_2_CONTA_H
+#endif //TP_2_ARQUIVO_CONTA_H

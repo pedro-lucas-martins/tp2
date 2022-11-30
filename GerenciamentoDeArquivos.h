@@ -6,14 +6,14 @@
 #define TP_2_ARQUIVO_GERENCIAMENTODEARQUIVOS_H
 #include <fstream>
 #include <string>
+#include <vector>
 
 class GerenciamentoDeArquivos
 {
 public:
     GerenciamentoDeArquivos();
     void writeOnFile(std::string nome, std::string palavra);
-    void deleteOnFile();
-    void readOnFile();
+    std::vector<std::string> readOnFile(std::string nome, std::string doadorColetor);
 };
 
 

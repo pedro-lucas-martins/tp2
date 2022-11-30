@@ -11,12 +11,12 @@
 class Conta
 {
 private:
-    GerenciamentoDeArquivos* auxArquivo = new GerenciamentoDeArquivos;
+    GerenciamentoDeArquivos* auxArquivo;
     Conta* novaConta;
 public:
     Conta();
     void registrarConta();
-    void deletarConta();
+    static void deletarConta();
     void perguntaResiduo(GerenciamentoDeArquivos* auxConta,std::string doaRecolhe, std::string nome);
 };
 

@@ -44,6 +44,10 @@
         "numeric": "cpp",
         "random": "cpp",
         "tuple": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "optional": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp",
+        "cstring": "cpp"
     }
 }

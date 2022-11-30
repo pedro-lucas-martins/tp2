@@ -10,6 +10,8 @@
 #include "Residuo.h"
 #include "Solido.h"
 #include "Liquido.h"
+#include <cstring>
+#include <istream>
 
 Conta::Conta(){};
 
@@ -19,6 +21,21 @@ void Conta::perguntaResiduo(GerenciamentoDeArquivos* auxArquivo, std::string doa
     std::string resposta;
     if (doaRecebe == "DOADOR"){
         std::cout << "Qual tipo de residuo gostaria de Doar? [1] - SOLIDO | [2] - LIQUIDO\n";
+        std::cin >> resposta;
+        if (resposta == "1"){
+            novoResiduo = new Solido();
+            Residuo::registrarNovoSolido(auxArquivo, nome);
+            delete novoResiduo;
+        }
+        if (resposta == "2"){
+            novoResiduo = new Liquido();
+            Residuo::registrarNovoLiquido(auxArquivo, nome);
+            delete novoResiduo;
+        }
+    }
+
+    if (doaRecebe == "COLETOR"){
+        std::cout << "Qual tipo de residuo gostaria de Coletar? [1] - SOLIDO | [2] - LIQUIDO\n";
         std::cin >> resposta;
         if (resposta == "1"){
             novoResiduo = new Solido();
@@ -47,25 +64,59 @@ void Conta::registrarConta() {
         std::cin >> opt;
         if (opt == 1) {
             std::cout << "Como gostaria de ser chamado?\n";
-            std::cin >> nome;
+            while (getline(std::cin, nome)){
+                if (nome != "")
+                break;
+            }
             auxArquivo->writeOnFile(nome, nome);
             std::cout << "Voce e uma pessoa fisica ou juridica? [1] - FISICA | [2] - JURIDICA\n";
             std::cin >> resposta;
             if(resposta == "1"){resposta = "FISICA"; auxArquivo->writeOnFile(nome,resposta);}
             if(resposta == "2"){resposta = "JURIDICA";auxArquivo->writeOnFile(nome,resposta);}
-            std::cout << "Voce gostaria de doar ou recolher residuos? [1] - DOAR | [2] - RECOLHER\n";
+            std::cout << "Voce gostaria de doar ou recolher residuos? [1] - DOAR | [2] - COLETAR\n";
             std::cin >> resposta;
             if(resposta == "1"){
                 resposta = "DOADOR";
+                auxArquivo->writeOnFile(nome,resposta);
                 novaConta = new Doador();
-                while (continua != 'n' && continua != 'N') {
+                while (continua != 'n' && continua != 'N'){
                     novaConta->perguntaResiduo(auxArquivo, resposta, nome);
                     std::cout << "Gostaria de adicionar mais? [SIM] | [NAO]\n";
                     std::cin >> continua;
                 }
             }
-            if(resposta == "2"){resposta = "RECOLHEDOR";}
-
+            if(resposta == "2"){
+                resposta = "COLETOR";
+                auxArquivo->writeOnFile(nome,resposta);
+                novaConta = new Coletor();
+                while (continua != 'n' && continua != 'N'){
+                    novaConta->perguntaResiduo(auxArquivo, resposta, nome);
+                    std::cout << "Gostaria de adicionar mais? [SIM] | [NAO]\n";
+                    std::cin >> continua;
+                }
+            }
+        }
+        if (opt == 4) {
+            int aux;
+            std::cout << "Tem certeza que deseja remover sua conta do sistema? [SIM] | [NAO]\n";
+            std::cin >> resposta;
+            if (resposta == "1"){
+                std::cout << "Informe o nome da conta: ";
+                while (getline(std::cin, nome)){
+                    if (nome != "")
+                    break;
+                }
+                nome = nome+".txt";
+                const char* nomeConta = nome.c_str();
+                std::remove(nomeConta);
+                aux = std::remove(nomeConta);
+                if (aux = 0){
+                    std::cout << "Sua conta foi removida com sucesso.";
+                }
+                if (aux = 1){
+                    std::cout << "Houve um problema ao remover sua conta.";
+                }
+            }
         }
     }
 }

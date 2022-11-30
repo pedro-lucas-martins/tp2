@@ -16,6 +16,7 @@ private:
 public:
     Conta();
     void registrarConta();
+    void deletarConta();
     void perguntaResiduo(GerenciamentoDeArquivos* auxConta,std::string doaRecolhe, std::string nome);
 };
 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/tp_2_arquivo.dir/main.cpp.o CMakeFiles/tp_2_arquivo.dir/GerenciamentoDeArquivos.cpp.o CMakeFiles/tp_2_arquivo.dir/Conta.cpp.o CMakeFiles/tp_2_arquivo.dir/Residuo.cpp.o CMakeFiles/tp_2_arquivo.dir/Solido.cpp.o CMakeFiles/tp_2_arquivo.dir/Liquido.cpp.o CMakeFiles/tp_2_arquivo.dir/Doador.cpp.o CMakeFiles/tp_2_arquivo.dir/Coletor.cpp.o -o tp_2_arquivo 

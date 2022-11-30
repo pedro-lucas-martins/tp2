@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/pedro/Documents/faculdade-semestre-2/tp-2-arquivo/cmake-build-debug",
-		"source" : "/home/pedro/Documents/faculdade-semestre-2/tp-2-arquivo"
+		"build" : "/home/pedro/tp2/cmake-build-debug",
+		"source" : "/home/pedro/tp2"
 	},
 	"version" : 
 	{

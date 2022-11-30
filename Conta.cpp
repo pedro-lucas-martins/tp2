@@ -48,12 +48,37 @@ void Conta::perguntaResiduo(GerenciamentoDeArquivos* auxArquivo, std::string doa
             delete novoResiduo;
         }
     }
-};
+}
+
+void Conta::deletarConta()
+{
+    int aux;
+    std::string resposta;
+    std::string nome;
+    std::cout << "Tem certeza que deseja remover sua conta do sistema? [1] - SIM | [2] - NAO\n";
+    std::cin >> resposta;
+    if (resposta == "1"){
+        std::cout << "Informe o nome da conta: ";
+        while (getline(std::cin, nome)){
+            if (nome != "")
+                break;
+        }
+        std::cout << "Voce e DOADOR ou COLETOR? [1] - DOADOR | [2] - COLETOR\n";
+        std::cin >> resposta;
+        resposta += "-"; resposta += nome;
+        const char* nomeConta = resposta.c_str();
+        std::remove(nomeConta);
+    }
+    if (resposta == "2"){
+        std::cout << "Operacao cancelada.\n";
+    }
+}
 
 void Conta::registrarConta() {
     int opt = 1;
     std::string nome;
     std::string resposta;
+    std::string auxResposta;
     char continua;
 
     std::cout << "Ola, bem vindo ao programa de coleta seletiva da cidade.\n";
@@ -68,25 +93,22 @@ void Conta::registrarConta() {
                 if (nome != "")
                 break;
             }
-            auxArquivo->writeOnFile(nome, nome);
-            std::cout << "Voce e uma pessoa fisica ou juridica? [1] - FISICA | [2] - JURIDICA\n";
-            std::cin >> resposta;
-            if(resposta == "1"){resposta = "FISICA"; auxArquivo->writeOnFile(nome,resposta);}
-            if(resposta == "2"){resposta = "JURIDICA";auxArquivo->writeOnFile(nome,resposta);}
             std::cout << "Voce gostaria de doar ou recolher residuos? [1] - DOAR | [2] - COLETAR\n";
             std::cin >> resposta;
             if(resposta == "1"){
                 resposta = "DOADOR";
-                auxArquivo->writeOnFile(nome,resposta);
+                auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
+                auxArquivo->writeOnFile(auxResposta,nome);
                 novaConta = new Doador();
                 while (continua != 'n' && continua != 'N'){
-                    novaConta->perguntaResiduo(auxArquivo, resposta, nome);
+                    novaConta->perguntaResiduo(auxArquivo, resposta, auxResposta);
                     std::cout << "Gostaria de adicionar mais? [SIM] | [NAO]\n";
                     std::cin >> continua;
                 }
             }
             if(resposta == "2"){
                 resposta = "COLETOR";
+                nome = resposta+"-"+nome;
                 auxArquivo->writeOnFile(nome,resposta);
                 novaConta = new Coletor();
                 while (continua != 'n' && continua != 'N'){
@@ -95,28 +117,13 @@ void Conta::registrarConta() {
                     std::cin >> continua;
                 }
             }
+            std::cout << "Voce e uma pessoa fisica ou juridica? [1] - FISICA | [2] - JURIDICA\n";
+            std::cin >> resposta;
+            if(resposta == "1"){resposta = "FISICA"; auxArquivo->writeOnFile(auxResposta,resposta);}
+            if(resposta == "2"){resposta = "JURIDICA";auxArquivo->writeOnFile(auxResposta,resposta);}
         }
         if (opt == 4) {
-            int aux;
-            std::cout << "Tem certeza que deseja remover sua conta do sistema? [SIM] | [NAO]\n";
-            std::cin >> resposta;
-            if (resposta == "1"){
-                std::cout << "Informe o nome da conta: ";
-                while (getline(std::cin, nome)){
-                    if (nome != "")
-                    break;
-                }
-                nome = nome+".txt";
-                const char* nomeConta = nome.c_str();
-                std::remove(nomeConta);
-                aux = std::remove(nomeConta);
-                if (aux = 0){
-                    std::cout << "Sua conta foi removida com sucesso.";
-                }
-                if (aux = 1){
-                    std::cout << "Houve um problema ao remover sua conta.";
-                }
-            }
+            deletarConta();
         }
     }
 }

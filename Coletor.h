@@ -8,7 +8,10 @@
 #include <string>
 
 class Coletor: public Conta
-{};
+{
+public:
+    Coletor();
+};
 
 
 #endif //TP_2_ARQUIVO_COLETOR_H

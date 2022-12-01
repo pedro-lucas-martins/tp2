@@ -33,3 +33,14 @@ std::vector<std::string> GerenciamentoDeArquivos::readOnFile(std::string nome, s
 
     return todosDados;
 }
+std::vector<std::string> GerenciamentoDeArquivos::readContas(std::string nomeArquivo)
+{
+    std::vector<std::string> auxVector;
+    std::string auxString;
+    std::ifstream arquivo(nomeArquivo);
+    while(arquivo.good()){
+        getline(arquivo,auxString);
+        auxVector.push_back(auxString);
+    }
+    return auxVector;
+}

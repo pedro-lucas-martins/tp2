@@ -54,6 +54,8 @@ void Conta::deletarConta()
 {
     std::string resposta;
     std::string nome;
+    GerenciamentoDeArquivos* auxArquivo2 = new GerenciamentoDeArquivos;
+    todasContas = auxArquivo2->readContas(arquivoContas);
     std::cout << "Tem certeza que deseja remover sua conta do sistema? [1] - SIM | [2] - NAO\n";
     std::cin >> resposta;
     if (resposta == "1"){
@@ -69,6 +71,9 @@ void Conta::deletarConta()
         resposta += "-"; resposta += nome; resposta += ".txt";
         const char* nomeConta = resposta.c_str();
         std::remove(nomeConta);
+        for (long unsigned int i = 0; i < todasContas.size(); i++){
+            if (nomeConta == todasContas[i]){todasContas.erase(todasContas.begin() + i);}
+        }
     }
     if (resposta == "2"){
         std::cout << "Operacao cancelada.\n";
@@ -87,7 +92,8 @@ void Conta::registrarConta() {
     std::cout << "Qual operacao gostaria de fazer? \n";
 
     while (opt != 0) {
-        std::cout << "[1] - Cadastrar conta\n[2] - Ver dados da conta\n[3] - Atualizar dados da conta\n[4] - Deletar uma conta\n[0] - Sair\n";
+        std::cout << "[1] - Cadastrar conta\n[2] - Ver dados da conta\n[3] - Atualizar dados da conta\n"
+                     "[4] - Deletar uma conta\n[5] - Agendar/Confirmar Coleta\n[0] - Sair\n";
         std::cin >> opt;
 
         /*    AQUI SERA CADASTRADO A CONTA    */
@@ -115,10 +121,14 @@ void Conta::registrarConta() {
                 resposta = "DOADOR";
                 auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
 
+                auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt"+"\n");
+
                 auxArquivo->writeOnFile(auxResposta,"NOME:");
                 auxArquivo->writeOnFile(auxResposta,nome + "\n");
+
                 auxArquivo->writeOnFile(auxResposta,"TIPO DE PESSOA:");
                 auxArquivo->writeOnFile(auxResposta,tipoPessoa + "\n");
+
                 novaConta = new Doador();
                 auxArquivo->writeOnFile(auxResposta,"LISTA DE INTERESSE:");
                 while (continua != 'n' && continua != 'N'){
@@ -135,13 +145,28 @@ void Conta::registrarConta() {
                 auxArquivo->writeOnFile(auxResposta,nome + "\n");
                 auxArquivo->writeOnFile(auxResposta,"TIPO DE PESSOA:");
                 auxArquivo->writeOnFile(auxResposta,tipoPessoa + "\n");
-                novaConta = new Doador();
+                novaConta = new Coletor();
                 auxArquivo->writeOnFile(auxResposta,"LISTA DE INTERESSE:");
                 while (continua != 'n' && continua != 'N'){
                     novaConta->perguntaResiduo(auxArquivo, resposta, auxResposta);
                     std::cout << "Gostaria de adicionar mais? [SIM] | [NAO]\n";
                     std::cin >> continua;
                 }
+                std::cout << "Insira o endereco de coleta: \n";
+                while (getline(std::cin, resposta)) {
+                    if (resposta != "")
+                        break;
+                }
+                auxArquivo->writeOnFile(auxResposta, "\nENDERECO:");
+                auxArquivo->writeOnFile(auxResposta, resposta+"\n");
+
+                std::cout << "Insira o horario de coleta: \n";
+                while (getline(std::cin, resposta)) {
+                    if (resposta != "")
+                        break;
+                }
+                auxArquivo->writeOnFile(auxResposta, "HORARIO DE COLETA:");
+                auxArquivo->writeOnFile(auxResposta, resposta+"\n");
             }
             delete auxArquivo;
         }

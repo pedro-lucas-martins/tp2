@@ -3,3 +3,5 @@
 //
 
 #include "Coletor.h"
+
+Coletor::Coletor(){};

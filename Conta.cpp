@@ -55,7 +55,7 @@ void Conta::deletarConta()
     std::string resposta;
     std::string nome;
     GerenciamentoDeArquivos* auxArquivo2 = new GerenciamentoDeArquivos;
-    todasContas = auxArquivo2->readContas(arquivoContas);
+    todasContas = auxArquivo2->readContas();
     std::cout << "Tem certeza que deseja remover sua conta do sistema? [1] - SIM | [2] - NAO\n";
     std::cin >> resposta;
     if (resposta == "1"){
@@ -72,7 +72,10 @@ void Conta::deletarConta()
         const char* nomeConta = resposta.c_str();
         std::remove(nomeConta);
         for (long unsigned int i = 0; i < todasContas.size(); i++){
-            if (nomeConta == todasContas[i]){todasContas.erase(todasContas.begin() + i);}
+            if (resposta == todasContas[i]){
+                todasContas.erase(todasContas.begin() + i);
+                auxArquivo2->rewriteContas(todasContas);
+            }
         }
     }
     if (resposta == "2"){
@@ -121,7 +124,7 @@ void Conta::registrarConta() {
                 resposta = "DOADOR";
                 auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
 
-                auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt"+"\n");
+                auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt");
 
                 auxArquivo->writeOnFile(auxResposta,"NOME:");
                 auxArquivo->writeOnFile(auxResposta,nome + "\n");
@@ -140,11 +143,14 @@ void Conta::registrarConta() {
             if(resposta == "2"){
                 resposta = "COLETOR";
                 auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
+                auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt");
 
                 auxArquivo->writeOnFile(auxResposta,"NOME:");
                 auxArquivo->writeOnFile(auxResposta,nome + "\n");
+
                 auxArquivo->writeOnFile(auxResposta,"TIPO DE PESSOA:");
                 auxArquivo->writeOnFile(auxResposta,tipoPessoa + "\n");
+
                 novaConta = new Coletor();
                 auxArquivo->writeOnFile(auxResposta,"LISTA DE INTERESSE:");
                 while (continua != 'n' && continua != 'N'){

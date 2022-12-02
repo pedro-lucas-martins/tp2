@@ -14,7 +14,8 @@ public:
     GerenciamentoDeArquivos();
     void writeOnFile(std::string nome, std::string palavra);
     std::vector<std::string> readOnFile(std::string nome, std::string doadorColetor);
-    std::vector<std::string> readContas(std::string nomeArquivo);
+    std::vector<std::string> readContas();
+    void rewriteContas(std::vector<std::string> contas);
 };
 
 

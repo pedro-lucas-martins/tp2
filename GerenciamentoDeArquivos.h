@@ -16,6 +16,8 @@ public:
     std::vector<std::string> readOnFile(std::string nome, std::string doadorColetor);
     std::vector<std::string> readContas();
     void rewriteContas(std::vector<std::string> contas);
+    void mostraColetores();
+    void imprimeDadosColeta(std::string nomeArquivo);
 };
 
 

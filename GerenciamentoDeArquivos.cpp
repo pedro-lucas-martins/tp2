@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <istream>
 
 GerenciamentoDeArquivos::GerenciamentoDeArquivos() {};
 
@@ -34,6 +35,7 @@ std::vector<std::string> GerenciamentoDeArquivos::readOnFile(std::string nome, s
 
     return todosDados;
 }
+
 std::vector<std::string> GerenciamentoDeArquivos::readContas()
 {
     std::vector<std::string> auxVector;
@@ -53,4 +55,44 @@ void GerenciamentoDeArquivos::rewriteContas(std::vector<std::string> contas)
         arquivo <<"\n" + contas[i];
     }
     arquivo.close();
+}
+
+void GerenciamentoDeArquivos::imprimeDadosColeta(std::string nomeArquivo)
+{
+    std::string auxString;
+    std::ifstream arquivo(nomeArquivo);
+    while(arquivo.good()){
+        getline(arquivo, auxString);
+        std::cout << auxString << "\n";
+    }
+    arquivo.close();
+}
+
+void GerenciamentoDeArquivos::mostraColetores()
+{
+    int contador = 1;
+    int i = 0;
+    char palavra[100];
+
+    std::vector<std::string> todosDoadores;
+    std::string auxString;
+    std::ifstream arquivo("contas.txt");
+    while(arquivo.good()){
+        getline(arquivo, auxString);
+        if (auxString[7] == '-'){
+            todosDoadores.push_back(auxString);
+        }
+    }
+    std::cout << "Locais disponiveis para recolhimento: \n";
+    try{
+        for (long unsigned int i = 0; i < todosDoadores.size(); i++){
+            this->imprimeDadosColeta(todosDoadores[i]);
+            std::cout << "\n";
+            contador++;
+        }
+        if (todosDoadores.size() == 0){
+            throw std::out_of_range("Nao existem contas para coletar.");
+        }
+    }
+    catch (std::out_of_range &e) {std::cout << e.what();}
 }

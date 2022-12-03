@@ -59,6 +59,7 @@ void Conta::deletarConta()
     std::cout << "Tem certeza que deseja remover sua conta do sistema? [1] - SIM | [2] - NAO\n";
     std::cin >> resposta;
     if (resposta == "1"){
+        std::string auxAuxString;
         std::cout << "Informe o nome da conta: ";
         while (getline(std::cin, nome)){
             if (nome != "")
@@ -69,6 +70,10 @@ void Conta::deletarConta()
         if (resposta == "1"){resposta = "DOADOR";}
         if (resposta == "2"){resposta = "COLETOR";}
         resposta += "-"; resposta += nome; resposta += ".txt";
+        for (int i = 0; i < resposta.size(); i++){
+            auxAuxString += toupper(resposta[i]);
+        }
+        resposta = auxAuxString;
         const char* nomeConta = resposta.c_str();
         std::remove(nomeConta);
         for (long unsigned int i = 0; i < todasContas.size(); i++){
@@ -121,9 +126,13 @@ void Conta::registrarConta() {
             std::cout << "Voce gostaria de doar ou recolher residuos? [1] - DOAR | [2] - COLETAR\n";
             std::cin >> resposta;
             if(resposta == "1"){
+                std::string auxAuxString;
                 resposta = "DOADOR";
                 auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
-
+                for (int i = 0; i < auxResposta.size(); i++){
+                    auxAuxString += toupper(auxResposta[i]);
+                }
+                auxResposta = auxAuxString;
                 auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt");
 
                 auxArquivo->writeOnFile(auxResposta,"NOME:");
@@ -143,6 +152,9 @@ void Conta::registrarConta() {
             if(resposta == "2"){
                 resposta = "COLETOR";
                 auxResposta += resposta; auxResposta += "-"; auxResposta += nome;
+                for (int i = 0; i < auxResposta.size(); i++){
+                    auxResposta[i] = toupper(auxResposta[i]);
+                }
                 auxArquivo->writeOnFile(arquivoContas, auxResposta+".txt");
 
                 auxArquivo->writeOnFile(auxResposta,"NOME:");
@@ -173,6 +185,8 @@ void Conta::registrarConta() {
                 }
                 auxArquivo->writeOnFile(auxResposta, "HORARIO DE COLETA:");
                 auxArquivo->writeOnFile(auxResposta, resposta+"\n");
+
+                auxArquivo->writeOnFile(auxResposta, "DOADORES: \n");
             }
             delete auxArquivo;
         }
@@ -215,7 +229,109 @@ void Conta::registrarConta() {
         if (opt == 4) {
             deletarConta();
         }
+
+        /*    AQUI SERA AGENDADO E CONFIRMADO ENCONTROS ENTRE DOADORES E COLETORES    */
+
+        if (opt == 5){
+            std::string doadorColetor;
+            std::string nome2;
+            auxArquivo = new GerenciamentoDeArquivos;
+            std::cout << "Voce e DOADOR ou COLETOR? [1] - DOADOR | [2] - COLETOR\n";
+            std::cin >> doadorColetor;
+            if (doadorColetor == "1"){
+                std::string auxAuxString1;
+                std::string auxAuxString;
+                auxArquivo = new GerenciamentoDeArquivos;
+                
+                auxArquivo->mostraColetores(); 
+                
+                std::cout << "Insira o nome do COLETOR que voce gostaria de doar: \n";
+                
+                while (getline(std::cin, nome)){
+                    if (nome != "")
+                    break;
+                }
+
+                for (int i = 0; i < nome.size(); i++){
+                    auxAuxString += toupper(nome[i]);
+                }
+                nome = auxAuxString;
+                nome = "COLETOR-"+nome;
+
+                std::cout << "Insira o seu nome: ";
+                while (getline(std::cin, nome2)){
+                    if (nome2 != "")
+                    break;
+                }
+
+                for (int i = 0; i < nome2.size(); i++){
+                    auxAuxString1 += toupper(nome2[i]);
+                }
+
+                nome2 = "~DOADOR-"+auxAuxString1;
+                auxArquivo->writeOnFile(nome, nome2+"\n");
+            }
+
+            if (doadorColetor == "2"){
+                std::string nomeArquivo;
+                std::string auxString;
+                std::string auxNome;
+                std::string auxNome2;
+                std::string nome2;
+                std::vector<std::string> todosDados;
+                auxArquivo = new GerenciamentoDeArquivos;
+
+                std::cout << "Digite seu nome: ";
+
+                while (getline(std::cin, nome)){
+                    if (nome != "")
+                break;
+                }
+
+                for (int i = 0; i < nome.size(); i++){
+                    auxNome += toupper(nome[i]);
+                }
+                nome = "COLETOR-"+auxNome+".txt";
+
+                std::cout << "Contas com DOACAO agendada: \n";
+                std::ifstream arquivo(nome);
+                while(arquivo.good()){
+                    arquivo.ignore(1000,'~');
+                    getline(arquivo, auxString);
+                    std::cout << auxString << std::endl;
+                }
+                arquivo.close();
+                std::cout << "ESCREVA O NOME DO USUARIO PARA CONFIRMAR A ENTREGA: \n";
+
+                while (getline(std::cin, nome2)){
+                    if (nome2 != "")
+                break;
+                }
+
+                for (int i = 0; i < nome2.size(); i++){
+                    auxNome2 += toupper(nome2[i]);
+                }
+                nome2 = "~DOADOR-"+auxNome2;
+                std::cout << nome2 << std::endl;
+                arquivo.open(nome);
+                while(arquivo.good()){
+                    getline(arquivo, auxString);
+                    todosDados.push_back(auxString);
+                }
+                arquivo.close();
+                for (long unsigned int i = 0; i < todosDados.size(); i++){
+                    if (nome2 == todosDados[i])
+                    todosDados.erase(todosDados.begin() + i);
+                }
+                std::ofstream arquivo2(nome);
+                for (long unsigned int i = 0; i < todosDados.size(); i++){
+                arquivo2 <<"\n" + todosDados[i];
+                entregue = true;
+                }
+                arquivo2.close();
+                if (entregue) std::cout << "Entrega Relizada com sucesso!" << std::endl;
+                else std::cout << "Erro na entrega!" << std::endl;
+            }
+        }
     }
 }
-
-

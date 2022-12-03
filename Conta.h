@@ -17,6 +17,7 @@ private:
     Conta* novaConta;
     std::string arquivoContas = "contas";
     std::vector<std::string> todasContas;
+    bool entregue = false;
 public:
     Conta();
     void registrarConta();
